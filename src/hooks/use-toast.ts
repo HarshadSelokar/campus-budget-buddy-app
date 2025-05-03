@@ -117,14 +117,14 @@ export const reducer = (state: State, action: Action): State => {
         return {
           ...state,
           toasts: [],
-        }
+        };
       }
       return {
         ...state,
         toasts: state.toasts.filter((t) => t.id !== action.toastId),
-      }
+      };
   }
-}
+};
 
 const listeners: Array<(state: State) => void> = []
 
@@ -165,7 +165,7 @@ function toast({ ...props }: Toast) {
     id: id,
     dismiss,
     update,
-  }
+  };
 }
 
 function useToast() {
@@ -185,7 +185,7 @@ function useToast() {
     ...state,
     toast,
     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
-  }
+  };
 }
 
 export { useToast, toast }
