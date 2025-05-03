@@ -1,17 +1,26 @@
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker, DropdownProps } from "react-day-picker"
-import { format } from "date-fns"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-export function Calendar({
+export interface DateRange {
+  from: Date
+  to?: Date
+}
+
+function Calendar({
   className,
   classNames,
   showOutsideDays = true,
@@ -20,7 +29,7 @@ export function Calendar({
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3 pointer-events-auto", className)}
+      className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",
@@ -36,19 +45,13 @@ export function Calendar({
         table: "w-full border-collapse space-y-1",
         head_row: "flex",
         head_cell:
-          "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
+          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
-        cell: cn(
-          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
-          props.mode === "range"
-            ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
-            : "[&:has([aria-selected])]:rounded-md"
-        ),
+        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
+          "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
         ),
-        day_range_start: "day-range-start",
         day_range_end: "day-range-end",
         day_selected:
           "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
@@ -64,74 +67,76 @@ export function Calendar({
       components={{
         IconLeft: () => <ChevronLeft className="h-4 w-4" />,
         IconRight: () => <ChevronRight className="h-4 w-4" />,
+        Dropdown: ({ value, onChange, children, ...props }: DropdownProps) => {
+          const options = React.Children.toArray(
+            children
+          ) as React.ReactElement<React.HTMLProps<HTMLOptionElement>>[]
+          const selected = options.find((child) => child.props.value === value)
+          const handleChange = (value: string) => {
+            onChange?.({ target: { value } } as React.ChangeEvent<HTMLSelectElement>)
+          }
+          return (
+            <Select
+              value={value?.toString()}
+              onValueChange={(value) => {
+                handleChange(value)
+              }}
+            >
+              <SelectTrigger className="pr-1.5 focus:ring-0">
+                <SelectValue>{selected?.props?.children}</SelectValue>
+              </SelectTrigger>
+              <SelectContent position="popper">
+                {options.map((option, id) => (
+                  <SelectItem
+                    key={`${option.props.value}-${id}`}
+                    value={option.props.value?.toString() ?? ""}
+                  >
+                    {option.props.children}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )
+        },
       }}
       {...props}
     />
   )
 }
+Calendar.displayName = "Calendar"
 
+// Add DateRangePicker component
 interface DateRangePickerProps {
   value: [Date | undefined, Date | undefined];
-  onChange: (value: { from: Date | undefined; to: Date | undefined }) => void;
+  onChange: (value: { from: Date; to?: Date }) => void;
   calendarTodayClassName?: string;
 }
 
 export function DateRangePicker({ value, onChange, calendarTodayClassName }: DateRangePickerProps) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [from, to] = value;
+  
+  // Handle date selection
+  const handleSelect = (range: DateRange | undefined) => {
+    if (!range) {
+      onChange({ from: new Date() });
+      return;
+    }
+    onChange(range);
+  };
 
   return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <button
-          className={cn(
-            buttonVariants({ variant: "outline" }),
-            "justify-start text-left font-normal w-full"
-          )}
-        >
-          <div className="flex items-center justify-between w-full">
-            <span className="truncate">
-              {value[0] ? (
-                value[1] ? (
-                  <>
-                    {format(value[0], "LLL d, y")} - {format(value[1], "LLL d, y")}
-                  </>
-                ) : (
-                  format(value[0], "LLL d, y")
-                )
-              ) : (
-                <span>Select a date range</span>
-              )}
-            </span>
-            <ChevronDown className="h-4 w-4 opacity-50" />
-          </div>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="range"
-          defaultMonth={value[0]}
-          selected={{
-            from: value[0],
-            to: value[1],
-          }}
-          onSelect={(range) => {
-            if (range) {
-              onChange(range);
-              if (range.from && range.to) {
-                setIsOpen(false);
-              }
-            } else {
-              onChange({ from: undefined, to: undefined });
-            }
-          }}
-          numberOfMonths={1}
-          classNames={{
-            day_today: calendarTodayClassName || "bg-accent text-accent-foreground",
-          }}
-        />
-      </PopoverContent>
-    </Popover>
+    <div className="grid gap-2">
+      <Calendar
+        initialFocus
+        mode="range"
+        defaultMonth={from}
+        selected={{ from, to }}
+        onSelect={handleSelect}
+        numberOfMonths={1}
+        classNames={{
+          day_today: calendarTodayClassName || "bg-accent text-accent-foreground",
+        }}
+      />
+    </div>
   );
 }
-
-export default Calendar;

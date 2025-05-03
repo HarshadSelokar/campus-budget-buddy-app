@@ -69,7 +69,7 @@ const ExpensesTab: React.FC = () => {
       
       <DateRangePicker 
         value={dateRange} 
-        onChange={(range) => setDateRange([range?.from, range?.to])} 
+        onChange={(range) => setDateRange([range.from, range.to])} 
         calendarTodayClassName="bg-primary text-primary-foreground"
       />
     </div>
