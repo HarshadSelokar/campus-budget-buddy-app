@@ -85,11 +85,11 @@ export function DateRangePicker({ value, onChange, calendarTodayClassName }: Dat
         <button
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "justify-start text-left font-normal w-[250px] sm:w-[300px]"
+            "justify-start text-left font-normal w-full"
           )}
         >
           <div className="flex items-center justify-between w-full">
-            <span>
+            <span className="truncate">
               {value[0] ? (
                 value[1] ? (
                   <>
@@ -106,7 +106,7 @@ export function DateRangePicker({ value, onChange, calendarTodayClassName }: Dat
           </div>
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="range"
           defaultMonth={value[0]}
@@ -115,12 +115,16 @@ export function DateRangePicker({ value, onChange, calendarTodayClassName }: Dat
             to: value[1],
           }}
           onSelect={(range) => {
-            onChange(range || { from: undefined, to: undefined });
-            if (range?.from && range?.to) {
-              setIsOpen(false);
+            if (range) {
+              onChange(range);
+              if (range.from && range.to) {
+                setIsOpen(false);
+              }
+            } else {
+              onChange({ from: undefined, to: undefined });
             }
           }}
-          numberOfMonths={2}
+          numberOfMonths={1}
           classNames={{
             day_today: calendarTodayClassName || "bg-accent text-accent-foreground",
           }}
