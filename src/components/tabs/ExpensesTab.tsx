@@ -4,14 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useExpenses } from '@/contexts/ExpenseContext';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Search } from 'lucide-react';
+import { PlusCircle, Search, CalendarIcon } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ExpenseForm from '@/components/expenses/ExpenseForm';
 import ExpensesList from '@/components/expenses/ExpensesList';
 import { ExpenseCategory } from '@/types';
 import { DateRangePicker } from '@/components/ui/calendar';
-import { CalendarIcon } from '@radix-ui/react-icons';
 
 const ExpensesTab: React.FC = () => {
   const { expenses, getExpensesByCategory } = useExpenses();
