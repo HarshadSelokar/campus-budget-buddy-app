@@ -103,7 +103,8 @@ function Calendar({
     />
   )
 }
-Calendar.displayName = "Calendar"
+// Make sure Calendar is properly exported
+export { Calendar }
 
 // Add DateRangePicker component
 interface DateRangePickerProps {

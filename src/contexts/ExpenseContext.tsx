@@ -1,7 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Expense, ExpenseCategory } from '@/types';
+import { Expense, ExpenseCategory, PaymentMethod } from '@/types';
 import { toast } from 'sonner';
 
 interface BudgetMap {
@@ -131,7 +130,7 @@ export const useMockedExpenses = () => {
   
   const generateMockData = () => {
     // Sample payment methods
-    const paymentMethods = ['cash', 'credit card', 'debit card', 'mobile payment'];
+    const paymentMethods: PaymentMethod[] = ['cash', 'credit', 'debit', 'online', 'other'];
     
     const categories: ExpenseCategory[] = ['food', 'transport', 'education', 'entertainment', 'other'];
 
@@ -152,7 +151,7 @@ export const useMockedExpenses = () => {
         category: randomCategory,
         date: generateRandomDate().toISOString(),
         notes: `Mock expense ${i + 1} in ${randomCategory}`,
-        paymentMethod: randomPaymentMethod as PaymentMethod,
+        paymentMethod: randomPaymentMethod,
       };
       addExpense(mockExpense);
     }
