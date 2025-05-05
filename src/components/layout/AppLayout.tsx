@@ -5,20 +5,17 @@ import DashboardTab from '@/components/tabs/DashboardTab';
 import ExpensesTab from '@/components/tabs/ExpensesTab';
 import BudgetTab from '@/components/tabs/BudgetTab';
 import ReportsTab from '@/components/tabs/ReportsTab';
-import { useExpenses, useMockedExpenses } from '@/contexts/ExpenseContext';
+import { useExpenses } from '@/contexts/ExpenseContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const AppLayout: React.FC = () => {
   const { expenses } = useExpenses();
-  const { generateMockData } = useMockedExpenses();
   const isMobile = useIsMobile();
 
   // Generate mock data if there are no expenses
   React.useEffect(() => {
-    if (expenses.length === 0) {
-      generateMockData();
-    }
-  }, [expenses.length, generateMockData]);
+    
+  }, [expenses.length]);
 
   return (
     <div className="min-h-screen w-full bg-background text-foreground pb-16">

@@ -49,7 +49,7 @@ const RecentExpenses: React.FC<RecentExpensesProps> = ({ limit = 5 }) => {
   }
   
   return (
-    <ScrollArea className="max-h-[300px] pr-4">
+    <ScrollArea className="max-h-[300px] pr-4 overflow-y-auto">
       <div className="space-y-2">
         {sortedExpenses.map(expense => (
           <div 

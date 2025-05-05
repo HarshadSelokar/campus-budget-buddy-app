@@ -23,11 +23,11 @@ const ExpenseContext = createContext<ExpenseContextProps | undefined>(undefined)
 
 // Default budget values for each category
 const DEFAULT_BUDGETS: BudgetMap = {
-  food: 300,
-  transport: 150,
-  education: 200,
-  entertainment: 100,
-  other: 50
+  food: 0,
+  transport: 0,
+  education: 0,
+  entertainment: 0,
+  other: 0
 };
 
 interface ExpenseProviderProps {
@@ -96,7 +96,7 @@ export const ExpenseProvider: React.FC<ExpenseProviderProps> = ({ children }) =>
       ...prev,
       [category]: amount
     }));
-    toast.success(`${category} budget updated to $${amount}`);
+    toast.success(`${category} budget updated to ₹${amount}`);
   };
 
   const value: ExpenseContextProps = {
@@ -123,40 +123,4 @@ export const useExpenses = () => {
     throw new Error('useExpenses must be used within an ExpenseProvider');
   }
   return context;
-};
-
-// Fix the PaymentMethod reference in function
-export const useMockedExpenses = () => {
-  const { addExpense } = useExpenses();
-  
-  const generateMockData = () => {
-    // Sample payment methods
-    const paymentMethods: PaymentMethod[] = ['cash', 'credit', 'debit', 'online', 'other'];
-    
-    const categories: ExpenseCategory[] = ['food', 'transport', 'education', 'entertainment', 'other'];
-
-    const generateRandomAmount = () => parseFloat((Math.random() * 100).toFixed(2));
-
-    const generateRandomDate = () => {
-      const start = new Date(2023, 0, 1); // January 1, 2023
-      const end = new Date(); // Today's date
-      return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    };
-
-    for (let i = 0; i < 25; i++) {
-      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-      const randomPaymentMethod = paymentMethods[Math.floor(Math.random() * paymentMethods.length)];
-
-      const mockExpense: Omit<Expense, 'id'> = {
-        amount: generateRandomAmount(),
-        category: randomCategory,
-        date: generateRandomDate().toISOString(),
-        notes: `Mock expense ${i + 1} in ${randomCategory}`,
-        paymentMethod: randomPaymentMethod,
-      };
-      addExpense(mockExpense);
-    }
-  };
-  
-  return { generateMockData };
 };

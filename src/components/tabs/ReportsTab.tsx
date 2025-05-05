@@ -183,7 +183,7 @@ const ReportsTab: React.FC = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={expensesOverTime} margin={{ top: 10, right: 10, left: 0, bottom: 20 }}>
                       <XAxis dataKey="name" />
-                      <YAxis tickFormatter={(value) => `$${value}`} />
+                      <YAxis tickFormatter={(value) => `₹${value}`} />
                       <Tooltip formatter={(value) => formatCurrency(value as number)} />
                       <Bar dataKey="amount" fill="#8884d8" />
                     </BarChart>

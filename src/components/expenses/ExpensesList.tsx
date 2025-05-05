@@ -71,14 +71,14 @@ const ExpensesList: React.FC<ExpensesListProps> = ({ expenses }) => {
             className="flex items-center justify-between p-4 bg-background border border-border rounded-lg hover:bg-accent/50 transition-all"
           >
             <div className="flex items-center space-x-4">
-              <div 
+              {/* <div 
                 className="w-12 h-12 rounded-full flex items-center justify-center text-white" 
                 style={{ backgroundColor: CATEGORY_COLORS[expense.category] }}
               >
                 <span className="uppercase font-bold">
                   {expense.category.slice(0, 1)}
                 </span>
-              </div>
+              </div> */}
               <div>
                 <h3 className="font-medium text-foreground capitalize">{expense.category}</h3>
                 <p className="text-sm text-muted-foreground">
