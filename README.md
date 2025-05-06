@@ -50,45 +50,39 @@ A comprehensive mobile application built to help students track, analyze, and ma
 - Home screen quick-add widgets.
 
 ---
+## 🧰 Tech Stack
 
-🧰 Tech Stack
-The Campus Budget Buddy App is built using modern web and UI technologies to ensure performance, maintainability, and a polished user experience:
+The **Campus Budget Buddy App** is built using modern web and UI technologies to ensure performance, maintainability, and a polished user experience:
 
-⚛️ Frontend
-React – Declarative UI library for building fast, responsive interfaces
+### ⚛️ Frontend
 
-TypeScript – Strongly typed language for scalable and reliable code
+- **React** – Declarative UI library for building fast, responsive interfaces
+- **TypeScript** – Strongly typed language for scalable and reliable code
+- **Vite** – Lightning-fast development server and bundler
 
-Vite – Lightning-fast development server and bundler
+### 🎨 UI & Styling
 
-🎨 UI & Styling
-Radix UI – Unstyled, accessible UI primitives for building custom components
+- **Radix UI** – Unstyled, accessible UI primitives for building custom components
+- **shadcn/ui** – Beautifully styled Radix-based components, with full themeability
+- **Tailwind CSS** – Utility-first CSS framework for rapid UI development
+- **Lucide Icons** – Open-source icon set for clean, consistent visuals
 
-shadcn/ui – Beautifully styled Radix-based components, with full themeability
+### 📦 State Management & Utilities
 
-Tailwind CSS – Utility-first CSS framework for rapid UI development
+- **Zustand / Context API** *(specify if one is used)* – Lightweight state management
+- **React Hook Form** – For performant and scalable forms
+- **Date-fns** – Modern JavaScript date utility library
 
-Lucide Icons – Open-source icon set for clean, consistent visuals
+### 🔔 Notifications & Feedback
 
-📦 State Management & Utilities
-Zustand / Context API (specify if one is used) – Lightweight state management
+- **Sonner** – Beautiful toast notifications for alerts and reminders
 
-React Hook Form – For performant and scalable forms
+### 🧪 Tooling & Developer Experience
 
-Date-fns – Modern JavaScript date utility library
-
-🔔 Notifications & Feedback
-Sonner – Beautiful toast notifications for alerts and reminders
-
-🧪 Tooling & Developer Experience
-ESLint + Prettier – For code linting and formatting
-
-Husky + Lint-Staged – Git hooks to enforce clean commits
-
-PNPM / Yarn – Fast and efficient package management
-
-GitHub Actions – For CI/CD (if configured)
----
+- **ESLint + Prettier** – For code linting and formatting
+- **Husky + Lint-Staged** – Git hooks to enforce clean commits
+- **PNPM / Yarn** – Fast and efficient package management
+- **GitHub Actions** – For CI/CD (if configured)
 
 
 
